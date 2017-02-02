@@ -12,7 +12,6 @@ double Expression(TokenStream& inputStream)
 {
 	double left = Term(inputStream);
 	Token nextToken = inputStream.Get();
-	int counter = 1;
 	while (true)
 	{
 		switch (nextToken.type)
@@ -33,9 +32,7 @@ double Expression(TokenStream& inputStream)
 			inputStream.PutBack(nextToken);
 			return left;
 		}
-	
 	}
-
 	return left;
 }
 
@@ -66,7 +63,6 @@ double Term(TokenStream& inputStream)
 double Primary(TokenStream& inputStream)
 {
 	Token PrimaryToken = inputStream.Get();
-	PrimaryToken.print();
 	switch (PrimaryToken.type)
 	{
 	case '8':

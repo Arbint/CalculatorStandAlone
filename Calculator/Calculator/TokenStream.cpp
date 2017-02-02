@@ -15,8 +15,8 @@ Token TokenStream::Get()
 {
 	if (bIsBufferFull)
 	{
-		return Buffer;
 		bIsBufferFull = false;
+		return Buffer;
 	}
 	char rawInput;
 	std::cin >> rawInput;
