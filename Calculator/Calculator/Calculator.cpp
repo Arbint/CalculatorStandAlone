@@ -13,7 +13,7 @@ int main()
 		TokenStream inputStream;
 		double x = Expression(inputStream);
 		std::cout << "the result is: " << x << std::endl;
-		return 0;
+		
 	}
 	catch (std::runtime_error& error)
 	{

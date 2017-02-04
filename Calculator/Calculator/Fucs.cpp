@@ -38,18 +38,18 @@ double Expression(TokenStream& inputStream)
 
 double Term(TokenStream& inputStream)
 {
-	double left = Primary(inputStream);
+	double left = Factorial(inputStream);
 	Token NextToken = inputStream.Get();
 	while (true)
 	{
 		switch (NextToken.type)
 		{
 		case '*':
-			left *= Primary(inputStream);
+			left *= Factorial(inputStream);
 			NextToken = inputStream.Get();
 			break;
 		case '/':
-			left /= Primary(inputStream);
+			left /= Factorial(inputStream);
 			NextToken = inputStream.Get();
 			break;
 		default:
@@ -58,6 +58,27 @@ double Term(TokenStream& inputStream)
 			break;
 		}
 	}
+}
+
+double Factorial(TokenStream& inputStream)
+{
+	double left = Primary(inputStream);
+	Token NextToken = inputStream.Get();
+	while (true)
+	{
+		switch (NextToken.type)
+		{
+		case '!':
+			left = CalculateFactorial(left);
+			NextToken = inputStream.Get();
+			break;
+		default:
+			inputStream.PutBack(NextToken);
+			return left;
+			break;
+		}
+	}
+	return left;
 }
 
 double Primary(TokenStream& inputStream)
@@ -77,6 +98,16 @@ double Primary(TokenStream& inputStream)
 		}
 		return returnValue;
 	}
+	case '{':
+	{
+		double returnValue = Expression(inputStream);
+		Token NextToken = inputStream.Get();
+		if (NextToken.type != '}')
+		{
+			error("Missing corresponding ')'");
+		}
+		return returnValue;
+	}
 	case ';':
 		return PrimaryToken.value;
 	case 'q':
@@ -87,3 +118,22 @@ double Primary(TokenStream& inputStream)
 	}
 	return 0;
 }
+
+double CalculateFactorial(double inNumber)
+{
+	if (inNumber < 0)
+	{
+		error("get factorial with root smaller than 0");
+	}
+	if (inNumber == 0)
+	{
+		return 1;
+	}
+	int IntValue = static_cast<int>(inNumber);
+	for (int loopValue = IntValue - 1; loopValue > 0; --loopValue)
+	{
+		IntValue *= loopValue;
+	} 
+	return IntValue;
+}
+
